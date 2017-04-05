@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:pm="http://primefaces.org/mobile">
+<!-- <f:view renderKitId="PRIMEFACES_MOBILE" />-->
+<h:head>
+	<f:facet name="first">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport"
+			content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+	</f:facet>
+</h:head>
+<h:body>
+	<ui:composition template="/WEB-INF/tags/layout.xhtml">
+		<ui:define name="content">
+			<p:growl id="messages" showDetail="true" life="3000" />
+			
+				<!-- value="#{freeMB.apscPedido.idPedido}" -->
+				<h:form id="formPedido">
+					<!-- Cliente -->
+					<div class="row">
+						<div class="col-md-6">
+							<h:panelGrid id="display_cliente" columns="2" cellpadding="4"
+								style="">
+								<h:outputText value="NRO_PEDIDO" for="nroPedido1"
+									style="padding-left: 30px; padding-right: 30px;" />
+								<p:inputText id="nroPedido1"
+									value="#{freeMB.apscPedido.getIdPedido()}" label="nro_pedido"
+									readonly="true" />
+								<h:outputText value="CLIENTE" for="cliente1"
+									style="padding-left: 30px; padding-right: 30px;" />
+								<p:autoComplete id="cliente1"
+									value="#{freeMB.apscClienteSelect}"
+									completeMethod="#{freeMB.llenarClientes}" var="cliente"
+									itemValue="#{cliente}"
+									itemLabel="#{cliente.rsocial} #{cliente.apePat} #{cliente.apeMat},#{cliente.nomCli}"
+									converter="apscClienteConverter" forceSelection="true"
+									dropdown="true" maxResults="5" queryDelay="1000"
+									required="true">
+									<p:ajax event="itemSelect" listener="#{freeMB.actionAjax}"
+										update="formPedido:direccion1 formPedido:telefono1" />
+									<p:ajax event="change" listener="#{freeMB.action}"
+										update="formPedido:direccion1 formPedido:telefono1" />
+								</p:autoComplete>
+								<h:outputText value="DIRECCION" for="direccion1"
+									style="padding-left: 30px; padding-right: 30px;" />
+								<h:outputText id="direccion1" value="#{freeMB.dircliente}" />
+								<h:outputText value="CEL/TELF" for="telefono1"
+									style="padding-left: 30px; padding-right: 30px;" />
+								<h:outputText id="telefono1" value="#{freeMB.telfCelCliente}" />
+								<h:outputText value="VENDEDOR" for="vendedor1"
+									style="padding-left: 30px; padding-right: 30px;" />
+								<p:inputText id="vendedor1"
+									value="#{freeMB.apscUsuarios.getNomCompleto()}"
+									label="vendedor1" readonly="true" />
+
+							</h:panelGrid>
+						</div>
+						<div class="col-md-6">
+							<h:panelGrid id="display_cliente1" columns="2" cellpadding="4"
+								style="float:right;">
+								<h:outputText value="F.PAGO:" for="apscForpagoSelect"
+									style="padding-left: 30px; padding-right: 30px;" />
+								<p:selectOneMenu value="#{freeMB.apscForpagoSelect}"
+									converter="omnifaces.SelectItemsConverter"
+									id="apscForpagoSelect">
+									<f:selectItem itemLabel="Elija...." itemValue="" />
+									<f:selectItems value="#{freeMB.listaForPago}" var="forp"
+										itemLabel="#{forp.cdForpago}" itemValue="#{forp}" />
+								</p:selectOneMenu>
+								<h:outputText value="CONDICIONES:" for="condiciones1"
+									style="padding-left: 30px; padding-right: 30px;" />
+								<p:inputText id="condiciones1" value="#{freeMB.condiciones}"
+									label="condiciones1" />
+
+								<h:outputText value="CIUDAD:" for="ciudad1"
+									style="padding-left: 30px; padding-right: 30px;" />
+								<p:inputText id="ciudad1" value="#{freeMB.ciudad}"
+									label="ciudad1" />
+							</h:panelGrid>
+						</div>
+					</div>
+					<!-- lista de productos selectionados-->
+					<p:dataTable id="objects" var="object"
+						value="#{freeMB.listaProductosSelect}" styleClass="et_datatable"
+						emptyMessage="Vacio..." editable="true" paginator="true" rows="10"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15" selectionMode="single"
+						rowKey="#{object.cod_Comer}"
+						filteredValue="#{freeMB.listaProductosSelect}">
+						<p:column headerText="ORDEN" sortBy="#{object.nroItem}">
+							<!-- filterBy="#{object.cantidadCompra}" filterMatchMode="contains">-->
+							<h:outputText value="#{object.nroItem}" />
+						</p:column>
+						<p:column headerText="CODIGO" sortBy="#{object.cod_Prod}">
+							<!-- filterBy="#{object.cod_Comer}" filterMatchMode="contains" -->
+							<h:outputText value="#{object.cod_Comer}" />
+						</p:column>
+						<p:column headerText="CANTIDAD" sortBy="#{object.cantidadCompra}">
+							<!-- filterBy="#{object.cantidadCompra}" filterMatchMode="contains">-->
+							<h:outputText value="#{object.cantidadCompra}" />
+						</p:column>
+						<p:column headerText="DESCRIPCION" sortBy="#{object.nom_Prod}">
+							<!-- filterBy="#{object.nom_Prod}" filterMatchMode="contains">-->
+							<h:outputText value="#{object.nom_Prod}" />
+						</p:column>
+
+						<p:column headerText="P.UNIT" sortBy="#{object.pventa_Ref}">
+							<!-- filterBy="#{object.pventa_Ref}" filterMatchMode="contains">-->
+							<h:outputText value="#{object.pventa_Ref}" />
+						</p:column>
+						<p:column headerText="DSCTO" sortBy="#{object.dsctoCompra}">
+							<!-- filterBy="#{object.dsctoCompra}" filterMatchMode="contains">-->
+							<h:outputText value="#{object.dsctoCompra}%" />
+						</p:column>
+
+						<p:column headerText="TOTAL" sortBy="#{object.subTotalPro}">
+							<!-- filterBy="#{object.subTotalPro}" filterMatchMode="contains">-->
+							<h:outputText value="#{object.subTotalPro}" />
+						</p:column>
+						<p:column headerText="Quitar" style="width:8%">
+							<p:commandLink
+								update="formPedido:objects formPedido:tabVenta formPedido:tabCantidadSoles"
+								image="ui-icon ui-icon-close" title="Delete"
+								actionListener="#{freeMB.deleteProd(object.cod_Prod)}">
+								<h:outputText styleClass="ui-icon ui-icon-closethick" />
+							</p:commandLink>
+						</p:column>
+
+					</p:dataTable>
+					<div class="row">
+						<div class="col-md-6">
+							<h:panelGrid id="tabCantidadSoles" columns="2" cellpadding="4"
+								style="">
+								<h:outputText value="SON:" for="cantidadSoles"
+									style="padding-left: 30px; padding-right: 30px;" />
+								<h:outputText id="cantidadSoles" value="#{freeMB.cantidadSoles}" />
+								<h:outputText value="OBS:" for="obs"
+									style="padding-left: 30px; padding-right: 30px;" />
+								<h:inputTextarea id="obs" value="#{freeMB.obs}"
+									label="observacion"
+									style="margin-left: 0px; margin-right: 0px; width: 491px;" />
+							</h:panelGrid>
+						</div>
+						<div class="col-md-6">
+							<h:panelGrid id="tabVenta" columns="2" cellpadding="4"
+								style="float:right;">
+								<h:outputText value="V.VENTA" for="vventa"
+									style="padding-left: 30px; padding-right: 30px;" />
+								<p:inputText id="vventa" value="#{freeMB.VVenta}" label="vventa"
+									readonly="true" />
+								<h:outputText value="IGV" for="igv"
+									style="padding-left: 30px; padding-right: 30px;" />
+								<p:inputText id="idv" value="#{freeMB.IGV}" label="igv"
+									readonly="true" />
+								<h:outputText value="TOTAL" for="total"
+									style="padding-left: 30px; padding-right: 30px;" />
+								<p:inputText id="total" value="#{freeMB.VTotal}" label="total"
+									readonly="true" />
+
+							</h:panelGrid>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6"></div>
+						<div class="col-md-6">
+							<p:commandButton value="Enviar Pedido" id="ajax"
+								update="messages" oncomplete="PF('confirmAddPedido').show()"
+								styleClass="ui-priority-primary" />
+						</div>
+					</div>
+					<br />
+					<br />
+					<br />
+					<br />
+					<!-- fin cliente -->
+					<!-- confirmacion de pedido -->
+					<p:dialog header="Guardar Pedido" widgetVar="confirmAddPedido"
+						resizable="false" width="300" height="100" showEffect="clip"
+						hideEffect="clip" modal="true">
+						<h:panelGrid id="display1" columns="2" cellpadding="4"
+							style="margin:0 auto;">
+							<p:outputPanel layout="block" style="text-align:center">
+								<p:commandButton value="SI"
+									actionListener="#{freeMB.buttonAction}"
+									oncomplete="PF('confirmAddPedido').hide();location.reload()" ajax="true" update="formPedido:condiciones1 formPedido:ciudad1">
+								</p:commandButton>
+								<p:commandButton value="NO"
+									onclick="PF('confirmAddPedido').hide()" type="button" />
+							</p:outputPanel>
+						</h:panelGrid>
+					</p:dialog>
+					<!-- fin de venta de confirmacion -->
+				</h:form>
+
+				<h:form id="formProd">
+					<p:dataTable var="prod" value="#{freeMB.listaProductos}"
+						styleClass="et_datatable" emptyMessage="Sin productos"
+						editable="true" paginator="true" rows="5"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15" selectionMode="single"
+						rowKey="#{prod.cod_Prod}"
+						filteredValue="#{freeMB.listaProductosSelectFiltro}">
+						<p:column headerText="CODIGO" sortBy="#{prod.cod_Prod}"
+							filterBy="#{prod.cod_Prod}" filterMatchMode="contains">
+							<h:outputText value="#{prod.cod_Prod}"></h:outputText>
+						</p:column>
+						<p:column headerText="COMERCIAL" sortBy="#{prod.cod_Comer}"
+							filterBy="#{prod.cod_Comer}" filterMatchMode="contains">
+							<h:outputText value="#{prod.cod_Comer}"></h:outputText>
+						</p:column>
+						<p:column headerText="CATEGORIA" sortBy="#{prod.categoria}"
+							filterBy="#{prod.categoria}" filterMatchMode="contains">
+							<h:outputText value="#{prod.categoria}"></h:outputText>
+						</p:column>
+
+						<p:column headerText="MARCA" sortBy="#{prod.marca}"
+							filterBy="#{prod.marca}" filterMatchMode="contains">
+							<h:outputText value="#{prod.marca}"></h:outputText>
+						</p:column>
+
+						<p:column headerText="DESCRIPCION" sortBy="#{prod.nom_Prod}"
+							filterBy="#{prod.nom_Prod}" filterMatchMode="contains">
+							<h:outputText value="#{prod.nom_Prod}"></h:outputText>
+						</p:column>
+						<p:column headerText="PRECIO VENTA REF"
+							sortBy="#{prod.pventa_Ref}" filterBy="#{prod.pventa_Ref}"
+							filterMatchMode="contains">
+							<h:outputText value="#{prod.pventa_Ref}"></h:outputText>
+						</p:column>
+						<p:column headerText="DSCTO_REF" sortBy="#{prod.dscto_Remate}"
+							filterBy="#{prod.dscto_Remate}" filterMatchMode="contains">
+							<h:outputText value="#{prod.dscto_Remate}"></h:outputText>
+						</p:column>
+						<p:column headerText="STOCK" sortBy="#{prod.cantidad}"
+							filterBy="#{prod.cantidad}" filterMatchMode="contains">
+							<h:outputText value="#{prod.cantidad}"></h:outputText>
+						</p:column>
+
+						<p:column headerText="Agregar">
+							<p:commandLink icon="ui-icon-plus"
+								oncomplete="PF('confirmAddDlg').show()"
+								update="formProd:display1">
+								<f:setPropertyActionListener value="#{prod}"
+									target="#{freeMB.apscListProductosSelect}" />
+								<h:outputText styleClass="glyphicon glyphicon-plus" />
+							</p:commandLink>
+						</p:column>
+					</p:dataTable>
+
+					<p:dialog header="Agregar" widgetVar="confirmAddDlg"
+						resizable="false" width="400" height="250" showEffect="clip"
+						hideEffect="clip" modal="true">
+
+						<h:panelGrid id="display1" columns="2" cellpadding="4"
+							style="margin:0 auto;">
+
+							<h:outputText value="Codigo Producto" for="cod_Prod"
+								style="padding-left: 30px; padding-right: 30px;" />
+							<p:inputText id="cod_Prod"
+								value="#{freeMB.apscListProductosSelect.cod_Prod}"
+								label="cod_prod" readonly="true" />
+							<h:outputText value="Codigo Comer" for="cod_Comer"
+								style="padding-left: 30px; padding-right: 30px;" />
+							<p:inputText id="cod_Comer"
+								value="#{freeMB.apscListProductosSelect.cod_Comer}"
+								label="cod_Comer" readonly="true" />
+							<h:outputText value="Orden" for="nroItem"
+								style="padding-left: 30px; padding-right: 30px;" />
+							<p:inputText id="nroItem"
+								value="#{freeMB.apscListProductosSelect.nroItem}"
+								label="nroItem" />
+
+							<h:outputText value="Cantidad" for="cantidadCompra"
+								style="padding-left: 30px; padding-right: 30px;" />
+							<p:inputText id="cantidadCompra"
+								value="#{freeMB.apscListProductosSelect.cantidadCompra}"
+								label="Cantidad" />
+
+							<h:outputText value="Descuento" for="dsctoCompra"
+								style="padding-left: 30px; padding-right: 30px;" />
+							<p:inputText id="dsctoCompra"
+								value="#{freeMB.apscListProductosSelect.dsctoCompra}"
+								label="dscto" />
+
+							<p:outputPanel layout="block" style="text-align:center">
+								<p:commandButton value="Yes" actionListener="#{freeMB.addProd}"
+									oncomplete="PF('confirmAddDlg').hide()" ajax="true"
+									update="formPedido:objects formPedido:tabVenta formPedido:tabCantidadSoles messages">
+									<f:setPropertyActionListener value="#{object}"
+										target="#{freeMB.apscListProductosSelect}" />
+								</p:commandButton>
+								<p:commandButton value="No" onclick="PF('confirmAddDlg').hide()"
+									type="button" />
+							</p:outputPanel>
+						</h:panelGrid>
+					</p:dialog>
+					<p:separator style="width:500px;height:20px" />
+					<!-- fin de lista de productos oncomplete="PF('confirmDeleteDlg').show()"-->
+					<p:commandButton value="GO BACK!" onclick="window.history.back();" />
+				</h:form>
+		
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

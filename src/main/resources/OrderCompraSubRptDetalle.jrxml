@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.4.final using JasperReports Library version 6.0.4  -->
+<!-- 2015-05-03T04:06:14 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="OrderCompraSubRptDetalle" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="03ed6b13-3686-487d-8518-bb255aafab02">
+	<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
+	<queryString language="SQL">
+		<![CDATA[]]>
+	</queryString>
+	<field name="dscto" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[dscto]]></fieldDescription>
+	</field>
+	<field name="itemNro" class="java.lang.Short">
+		<fieldDescription><![CDATA[itemNro]]></fieldDescription>
+	</field>
+	<field name="codComer" class="java.lang.String">
+		<fieldDescription><![CDATA[codComer]]></fieldDescription>
+	</field>
+	<field name="precio" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[precio]]></fieldDescription>
+	</field>
+	<field name="cant" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[cant]]></fieldDescription>
+	</field>
+	<field name="codProd" class="java.lang.String">
+		<fieldDescription><![CDATA[codProd]]></fieldDescription>
+	</field>
+	<detail>
+		<band height="60" splitType="Stretch">
+			<textField>
+				<reportElement x="100" y="40" width="99" height="20" uuid="8ebe8252-883b-4c5f-9f15-fcd312dd93fd"/>
+				<textFieldExpression><![CDATA[$F{codComer}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="300" y="40" width="69" height="20" uuid="bf8c6ea4-b8fc-40d2-9910-12734c96dde2"/>
+				<textFieldExpression><![CDATA[$F{precio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="40" width="100" height="20" uuid="24f1e865-031d-4cb2-b2d2-58c4bbfce210"/>
+				<textFieldExpression><![CDATA[$F{itemNro}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="20" uuid="98783872-ab75-4acb-b1fa-058cbed2bd11"/>
+				<text><![CDATA[Nro]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="0" width="100" height="20" uuid="fe5e6415-741f-43d4-bdfd-06e9d8401e1a"/>
+				<text><![CDATA[Nombre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="0" width="100" height="20" uuid="51acb90d-d86e-4617-9f84-d1859d2f2915"/>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="300" y="0" width="68" height="20" uuid="ff9e5965-de7f-4805-a08d-a02bba370440"/>
+				<text><![CDATA[Precio unitario]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="200" y="40" width="100" height="20" uuid="0b2fe9a8-8943-4bb1-89a3-f82c70eadadc"/>
+				<textFieldExpression><![CDATA[$F{cant}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="22" width="369" height="8" uuid="55c4e88d-6434-49c0-bc9e-48ad334f0739"/>
+			</line>
+		</band>
+	</detail>
+</jasperReport>

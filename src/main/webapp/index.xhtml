@@ -1,0 +1,31 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:pm="http://primefaces.org/mobile" contentType="text/html">
+	<h:head>
+		<ui:param name="root" value="#{request.contextPath}/" />
+	</h:head>
+	<pm:page title="Hello World">
+		<pm:content id="main">
+			<h:body>
+				<ui:composition template="/WEB-INF/tags/layout.xhtml">
+					<ui:define name="content">
+						<div class="well well-lg">
+							<p:fieldset legend="Home Page" toggleable="false"
+								toggleSpeed="500">
+								<center>
+									<img width="70"
+										src="http://www.primefaces.org/showcase/javax.faces.resource/main/images/logoBlue.svg.xhtml" />
+								</center>
+							</p:fieldset>
+						</div>
+					</ui:define>
+				</ui:composition>
+			</h:body>
+		</pm:content>
+	</pm:page>
+
+</f:view>

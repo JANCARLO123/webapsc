@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:pm="http://primefaces.org/mobile">
+<!-- <f:view renderKitId="PRIMEFACES_MOBILE" />-->
+<h:head>
+	<f:facet name="first">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport"
+			content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+	</f:facet>
+</h:head>
+<h:body>
+	<ui:composition template="/WEB-INF/tags/layout.xhtml">
+		<ui:define name="content">
+			<pm:page>
+				<h:form id="formProd">
+					<p:growl id="messages" showDetail="true" life="3000" />
+					<p:dataGrid var="prod" value="#{freeMB.listaProductos}" columns="3"
+						layout="grid" rows="12" paginator="true" id="prods"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="6,12,16">
+						<f:facet name="header">
+               				Productos en Stock
+               			</f:facet>
+						<p:panel header="Código Comer: #{prod.cod_Comer}"
+							style="text-align:center">
+							<p:panel header="Nombre: #{prod.nom_Prod}"
+								style="text-align:center" />
+							<h:panelGrid columns="2" style="width:100%">
+								<h:outputText value=" Cantidad: #{prod.cantidad}" />
+								<h:outputText value=" Precio de Venta : S/#{prod.pventa_Ref}" />
+							</h:panelGrid>
+							<!-- <p:commandLink image="ui-icon ui-icon-close"
+								title="Agregar a Pedido" oncomplete="PF('confirmAddDlg').show()">
+								<f:setPropertyActionListener value="#{prod}"
+									target="#{freeMB.apscListProductosSelect}" />
+								<h:outputText styleClass="glyphicon glyphicon-plus" />
+							</p:commandLink>
+							update=":formProd:display1" update="j_idt19:formProd:display1"
+							-->
+							<p:commandLink icon="ui-icon-plus"
+								oncomplete="PF('confirmAddDlg').show()" update="j_idt19:formProd:display1">
+								<f:setPropertyActionListener value="#{prod}"
+									target="#{freeMB.apscListProductosSelect}" />
+								<h:outputText styleClass="glyphicon glyphicon-plus" />
+							</p:commandLink>
+
+
+						</p:panel>
+					</p:dataGrid>
+
+					<p:dialog header="Agregar" widgetVar="confirmAddDlg"
+						resizable="false" width="600" height="400" showEffect="clip"
+						hideEffect="clip" modal="true">
+
+						<h:panelGrid id="display1" columns="2" cellpadding="4"
+							style="margin:0 auto;">
+
+							<h:outputText value="Codigo Producto" for="cod_Prod"
+								style="padding-left: 30px; padding-right: 30px;" />
+							<p:inputText id="cod_Prod"
+								value="#{freeMB.apscListProductosSelect.cod_Prod}"
+								label="cod_prod" readonly="true" />
+							<h:outputText value="Codigo Comer" for="cod_Comer"
+								style="padding-left: 30px; padding-right: 30px;" />
+							<p:inputText id="cod_Comer"
+								value="#{freeMB.apscListProductosSelect.cod_Comer}"
+								label="cod_Comer" readonly="true" />
+							<h:outputText value="Orden" for="nroItem"
+								style="padding-left: 30px; padding-right: 30px;" />
+							<p:inputText id="nroItem"
+								value="#{freeMB.apscListProductosSelect.nroItem}"
+								label="nroItem"/>
+
+							<h:outputText value="Cantidad" for="cantidadCompra"
+								style="padding-left: 30px; padding-right: 30px;" />
+							<p:inputText id="cantidadCompra"
+								value="#{freeMB.apscListProductosSelect.cantidadCompra}"
+								label="Cantidad" />
+
+							<h:outputText value="Descuento" for="dsctoCompra"
+								style="padding-left: 30px; padding-right: 30px;" />
+							<p:inputText id="dsctoCompra"
+								value="#{freeMB.apscListProductosSelect.dsctoCompra}"
+								label="dscto" />
+
+							<p:outputPanel layout="block" style="text-align:center">
+								<p:commandButton value="Yes" actionListener="#{freeMB.addProd}"
+									oncomplete="PF('confirmAddDlg').hide()" ajax="true"
+									update="objects">
+									<f:setPropertyActionListener value="#{object}"
+										target="#{freeMB.apscListProductosSelect}" />
+								</p:commandButton>
+								<p:commandButton value="No" onclick="PF('confirmAddDlg').hide()"
+									type="button" />
+							</p:outputPanel>
+						</h:panelGrid>
+					</p:dialog>
+
+					<!-- editar prod de canasta 
+					
+
+					 fin de editar prod canasta -->
+
+
+					
+			</pm:page>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

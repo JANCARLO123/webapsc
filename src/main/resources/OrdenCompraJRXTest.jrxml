@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.4.final using JasperReports Library version 6.0.4  -->
+<!-- 2015-05-03T03:56:12 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="OrdenCompraJRX" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="66ff03f5-d9c8-48f0-a75d-b6f48c96c6a3">
+	<property name="ireport.zoom" value="1.3310000000000004"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="246"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Sample DB"/>
+	<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
+	<parameter name="datosPediDet" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<queryString language="HQL">
+		<![CDATA[]]>
+	</queryString>
+	<field name="total" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[total]]></fieldDescription>
+	</field>
+	<field name="apscPedidoDets" class="java.util.List">
+		<fieldDescription><![CDATA[apscPedidoDets]]></fieldDescription>
+	</field>
+	<field name="obs" class="java.lang.String">
+		<fieldDescription><![CDATA[obs]]></fieldDescription>
+	</field>
+	<field name="apscCliente" class="ferro.model.ApscCliente">
+		<fieldDescription><![CDATA[apscCliente]]></fieldDescription>
+	</field>
+	<field name="igv" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[igv]]></fieldDescription>
+	</field>
+	<field name="idPedido" class="java.lang.Long">
+		<fieldDescription><![CDATA[idPedido]]></fieldDescription>
+	</field>
+	<field name="ciudad" class="java.lang.String">
+		<fieldDescription><![CDATA[ciudad]]></fieldDescription>
+	</field>
+	<field name="bimNeto" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[bimNeto]]></fieldDescription>
+	</field>
+	<field name="condPago" class="java.lang.String">
+		<fieldDescription><![CDATA[condPago]]></fieldDescription>
+	</field>
+	<field name="apscVendedor" class="ferro.model.ApscVendedor">
+		<fieldDescription><![CDATA[apscVendedor]]></fieldDescription>
+	</field>
+	<field name="fecReg" class="java.util.Date">
+		<fieldDescription><![CDATA[fecReg]]></fieldDescription>
+	</field>
+	<field name="apscForpago" class="ferro.model.ApscForpago">
+		<fieldDescription><![CDATA[apscForpago]]></fieldDescription>
+	</field>
+	<title>
+		<band height="79" splitType="Stretch">
+			<image>
+				<reportElement x="0" y="0" width="180" height="79" uuid="a8dbc221-1053-4643-b8ff-145491aa7ed6"/>
+				<imageExpression><![CDATA["src\\main\\webapp\\WEB-INF\\jasper\\Logo.jpg"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="556" y="20" width="235" height="30" uuid="07234ada-3653-4463-bfda-102430a3a0f5"/>
+				<textFieldExpression><![CDATA[$F{fecReg}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="153" splitType="Stretch">
+			<staticText>
+				<reportElement x="39" y="0" width="78" height="20" uuid="4c2483d0-31bf-49ec-8f4d-58d455ccaf97"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nro_Pedido :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="39" y="20" width="78" height="20" uuid="75dd9198-5267-4f0f-b8b8-d406041f21a0"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[RUC :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="39" y="40" width="78" height="20" uuid="6d453811-a612-469b-a0c5-102f8c0c5162"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cliente :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="39" y="60" width="78" height="20" uuid="3fec7c1d-ee45-43bf-aaba-224ee837998c"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dirección :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="39" y="100" width="78" height="20" uuid="1288c382-6f9f-4812-9f3c-aebdb04edd09"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Telf./Cel.:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="39" y="120" width="78" height="20" uuid="8968ef3b-4b33-4691-82f3-9f9ec4eaa9b2"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Vendedor :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="556" y="0" width="76" height="20" uuid="6d6c8250-c84a-465a-8a84-6effff0b57f3"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[F.Pago:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="556" y="20" width="76" height="20" uuid="58ba5c09-4b6f-43a2-b3b7-bd9bc3054092"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Condiciones:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="556" y="40" width="76" height="20" uuid="2e13c16b-6c78-4b27-96e3-57a99c9a48f5"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ciudad:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="117" y="0" width="433" height="20" uuid="86e7396c-eb55-44eb-8c6b-a19011f26b71"/>
+				<textFieldExpression><![CDATA[$F{idPedido}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="117" y="20" width="433" height="20" uuid="ad7337ca-a054-453d-9e9d-0ae3d8d356a9"/>
+				<textFieldExpression><![CDATA[$F{apscCliente}.getNdoc()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="117" y="40" width="433" height="20" uuid="5f4af5c5-9226-4dbf-8c51-8f01268a06c8"/>
+				<textFieldExpression><![CDATA[$F{apscCliente}.getnombreTotal()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="117" y="60" width="433" height="40" uuid="97fac898-c7e2-4134-93bf-338959125076"/>
+				<textFieldExpression><![CDATA[$F{apscCliente}.getDirClie()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="117" y="120" width="433" height="20" uuid="fc98429b-c3ba-46f1-8cd6-f90f47bfbfbd"/>
+				<textFieldExpression><![CDATA[$F{apscVendedor}.getNombreCompleto()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="117" y="100" width="433" height="20" uuid="02fcac97-e1a5-4475-a93c-96256c31103b"/>
+				<textFieldExpression><![CDATA[$F{apscCliente}.obtenerTelCel()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="632" y="0" width="160" height="20" uuid="23a6b2e0-908f-4820-b025-d44610d00d45"/>
+				<textFieldExpression><![CDATA[$F{apscForpago}.getDescripcion()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="632" y="20" width="160" height="20" uuid="c061184a-7424-451f-9b2b-4280e9cb267f"/>
+				<textFieldExpression><![CDATA[$F{condPago}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="632" y="40" width="160" height="20" uuid="86fd0e6e-d7de-4b9c-96ff-af0fd58affb5"/>
+				<textFieldExpression><![CDATA[$F{ciudad}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="193" splitType="Stretch">
+			<staticText>
+				<reportElement x="355" y="0" width="100" height="20" uuid="621d4a83-b247-4283-b5ca-4c134bada223"/>
+				<textElement textAlignment="Justified">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Productos]]></text>
+			</staticText>
+			<subreport>
+				<reportElement x="0" y="42" width="800" height="98" isRemoveLineWhenBlank="true" uuid="3c96a32b-9603-4aea-8910-0ace9fd46c65"/>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{apscPedidoDets})]]></dataSourceExpression>
+				<subreportExpression><![CDATA["src/main/resources/OrderCompraSubRptDetalle.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</columnHeader>
+</jasperReport>

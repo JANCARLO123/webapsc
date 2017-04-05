@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	>
+<h:body>
+	<ui:composition template="/WEB-INF/tags/layout.xhtml">
+		<ui:define name="content">
+
+			<h:form id="form1">
+				<p:commandButton value="Listar"	actionListener="#{paramMB.refreshList}" update="objects" />
+				<p:commandButton value="Nuevo Parámetro" onclick="PF('newsDlg').show()" />
+
+
+				<br />
+				<br />
+				<p:growl id="messages" showDetail="true" life="3000" />
+				<p:dataTable id="objects" var="object" value="#{paramMB.list}"
+					styleClass="et_datatable" emptyMessage="Empty..." editable="true"
+					paginator="true" rows="10"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15" selectionMode="single"
+					rowKey="#{object.idParam}" filteredValue="#{paramMB.listSelected}">
+
+
+					<p:column headerText="Descripcion" sortBy="#{object.desParam}"
+						filterBy="#{object.desParam}" filterMatchMode="contains">
+						<h:outputText value="#{object.desParam}" />
+					</p:column>
+
+					<p:column headerText="Categoria" sortBy="#{object.desCate}"
+						filterBy="#{object.desCate}" filterMatchMode="contains">
+						<h:outputText value="#{object.desCate}" />
+					</p:column>
+
+					<p:column headerText="Cod. Categoria" sortBy="#{object.codCate}"
+						filterBy="#{object.codCate}" filterMatchMode="contains">
+						<h:outputText value="#{object.codCate}" />
+					</p:column>
+
+					<p:column headerText="Cod. Parametro" sortBy="#{object.codParam}"
+						filterBy="#{object.codParam}" filterMatchMode="contains">
+						<h:outputText value="#{object.codParam}" />
+					</p:column>
+
+					<p:column headerText="Valor" sortBy="#{object.valParam}"
+						filterBy="#{object.valParam}" filterMatchMode="contains">
+						<h:outputText value="#{object.valParam}" />
+					</p:column>
+
+
+					<p:column headerText="Fecha Registro" sortBy="#{object.fecReg}"
+						filterBy="#{object.fecReg}" filterMatchMode="contains">
+						<h:outputText value="#{object.fecReg}" />
+					</p:column>
+
+					<p:column headerText="Estado" sortBy="#{object.estado}"
+						filterBy="#{object.estado}" filterMatchMode="contains">
+						<h:outputText value="#{object.estado?'Activado':'Desactivado'}" />
+					</p:column>
+
+					<p:column headerText="Activar/Desac" style="width:8%">
+						<p:commandLink update=":form1:display"
+							oncomplete="PF('confirmDeleteDlg').show()"
+							image="ui-icon ui-icon-close" title="Delete">
+							<f:setPropertyActionListener value="#{object}"
+								target="#{paramMB.paramGeneralesSelec}" />
+							<h:outputText styleClass="ui-icon ui-icon-close" />
+						</p:commandLink>
+						<p:commandLink update=":form1:display"
+							oncomplete="PF('confirmActivateDlg').show()"
+							image="ui-icon ui-icon-check" title="Activar">
+							<f:setPropertyActionListener value="#{object}"
+								target="#{paramMB.paramGeneralesSelec}" />
+							<h:outputText styleClass="ui-icon ui-icon-check" />
+						</p:commandLink>
+					</p:column>
+
+					<p:column headerText="Details" style="width:8%">
+						<p:commandLink update=":form1:display"
+							oncomplete="PF('detailsDlg').show()"
+							image="ui-icon ui-icon-search" title="Details">
+							<f:setPropertyActionListener value="#{object}"
+								target="#{paramMB.paramGeneralesSelec}" />
+							<h:outputText styleClass="ui-icon ui-icon-search" />
+						</p:commandLink>
+					</p:column>
+
+
+				</p:dataTable>
+
+				<p:panel header="Export All Data">
+					<h:commandLink>
+						<p:graphicImage value="/resources/img/excel.png" />
+						<p:dataExporter type="xls"
+							postProcessor="#{paramMB.postProcessXLS}" target="objects"
+							fileName="parametros" />
+					</h:commandLink>
+
+					<h:commandLink>
+						<p:graphicImage value="/resources/img/pdf.png" />
+						<p:dataExporter type="pdf" target="objects" fileName="parametros" />
+					</h:commandLink>
+
+				</p:panel>
+
+
+				<p:dialog header="Remove" widgetVar="confirmDeleteDlg"
+					resizable="false" width="400" height="60" showEffect="clip"
+					hideEffect="clip" modal="true">
+
+					<p:outputPanel layout="block" style="text-align:center">
+						<p:commandButton value="Yes"
+							update=":form1:messages,:form1:objects"
+							actionListener="#{paramMB.delete}"
+							oncomplete="PF('confirmDeleteDlg').hide()" />
+						<p:commandButton value="No"
+							onclick="PF('confirmDeleteDlg').hide()" type="button" />
+					</p:outputPanel>
+
+				</p:dialog>
+
+				<p:dialog header="Activar" widgetVar="confirmActivateDlg"
+					resizable="false" width="400" height="60" showEffect="clip"
+					hideEffect="clip" modal="true">
+
+					<p:outputPanel layout="block" style="text-align:center">
+						<p:commandButton value="Yes"
+							update=":form1:messages,:form1:objects"
+							actionListener="#{paramMB.activate}"
+							oncomplete="PF('confirmActivateDlg').hide()" />
+						<p:commandButton value="No"
+							onclick="PF('confirmActivateDlg').hide()" type="button" />
+					</p:outputPanel>
+
+				</p:dialog>
+
+
+
+				<p:dialog header="Actualizar Parámetro" widgetVar="detailsDlg"
+					resizable="false" width="750" height="400" showEffect="clip"
+					hideEffect="clip" modal="true">
+
+					<h:panelGrid id="display" columns="2" cellpadding="4"
+						style="margin:0 auto;">
+
+						<h:outputText value="Descripción Parámetro" for="desParam"
+							style="padding-left: 30px; padding-right: 30px;" />
+						<p:inputText id="desParam"
+							value="#{paramMB.paramGeneralesSelec.desParam}"
+							label="Descripción Parametro" />
+
+						<h:outputText value="Valor Parámetro" for="valParam"
+							style="padding-left: 30px; padding-right: 30px;" />
+						<p:inputTextarea id="valParam"
+							value="#{paramMB.paramGeneralesSelec.valParam}"
+							label="Valor Parametro" />
+
+						<h:outputText value="Descripción Categoría" for="desCate"
+							style="padding-left: 30px; padding-right: 30px;" />
+						<p:inputText id="desCate"
+							value="#{paramMB.paramGeneralesSelec.desCate}"
+							label="Descripción Categoria" />
+
+						<h:outputText value="Cod. Categoría" for="codCate"
+							style="padding-left: 30px; padding-right: 30px;" />
+						<p:inputText id="codCate"
+							value="#{paramMB.paramGeneralesSelec.codCate}"
+							label="Código Categoria" />
+
+						<h:outputText value="Cod. Parámetro" for="codParam"
+							style="padding-left: 30px; padding-right: 30px;" />
+						<p:inputText id="codParam"
+							value="#{paramMB.paramGeneralesSelec.codParam}"
+							label="Código Parametro" />
+
+					</h:panelGrid>
+
+					<p:outputPanel layout="block" style="text-align:center">
+						<br />
+						<br />
+						<p:commandButton value="Update"
+							update=":form1:objects, :form1:messages"
+							actionListener="#{paramMB.update}"
+							oncomplete="PF('detailsDlg').hide()" />
+
+						<p:commandButton value="Cancel" onclick="PF('detailsDlg').hide()"
+							type="button" />
+					</p:outputPanel>
+
+				</p:dialog>
+
+				<!-- ini new parameter form -->
+				<p:dialog header="Nuevo Parámetro" widgetVar="newsDlg"
+					resizable="false" width="750" height="400" showEffect="clip"
+					hideEffect="clip" modal="true">
+
+					<h:panelGrid id="newp" columns="2" cellpadding="4"
+						style="margin:0 auto;">
+
+						<h:outputText value="Descripción Parámetro" for="desParamn"
+							style="padding-left: 30px; padding-right: 30px;" />
+						<p:inputText id="desParamn"
+							value="#{paramMB.paramGenerales.desParam}"
+							label="Descripción Parametro" />
+						<h:outputText value="Descripción Categoría" for="desCaten"
+							style="padding-left: 30px; padding-right: 30px;" />
+						<p:inputText id="desCaten"
+							value="#{paramMB.paramGenerales.desCate}"
+							label="Descripción Categoria" />
+
+						<h:outputText value="Cod. Categoría" for="codCaten"
+							style="padding-left: 30px; padding-right: 30px;" />
+						<p:inputText id="codCaten"
+							value="#{paramMB.paramGenerales.codCate}"
+							label="Código Categoria" />
+
+						<h:outputText value="Cod. Parámetro" for="codParamn"
+							style="padding-left: 30px; padding-right: 30px;" />
+						<p:inputText id="codParamn"
+							value="#{paramMB.paramGenerales.codParam}"
+							label="Código Parametro" />
+
+						<h:outputText value="Valor Parámetro" for="valParamn"
+							style="padding-left: 30px; padding-right: 30px;" />
+						<p:inputTextarea id="valParamn"
+							value="#{paramMB.paramGenerales.valParam}"
+							label="Valor Parametro" />
+
+					</h:panelGrid>
+
+					<p:outputPanel layout="block" style="text-align:center">
+						<br />
+						<br />
+						<p:commandButton value="Save"
+							update=":form1:objects, :form1:messages"
+							actionListener="#{paramMB.register}"
+							oncomplete="PF('newsDlg').hide()" />
+
+						<p:commandButton value="Cancel" onclick="PF('newsDlg').hide()"
+							type="button" />
+					</p:outputPanel>
+
+				</p:dialog>
+				<!-- end new parametro form -->
+                
+
+			</h:form>
+            
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

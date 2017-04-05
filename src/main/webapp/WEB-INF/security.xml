@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns:sec="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="
+     http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+    http://www.springframework.org/schema/security
+    http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+
+
+	<beans:bean id="exceptionTranslationFilter"
+		class="org.springframework.security.web.access.ExceptionTranslationFilter">
+		<beans:constructor-arg name="authenticationEntryPoint"
+			value="#{authenticationEntryPoint}" />
+		<beans:property name="accessDeniedHandler" ref="jsfAccessDeniedHandler" />
+		<!-- <beans:property name="authenticationEntryPoint" ref="authenticationEntryPoint"/> -->
+	</beans:bean>
+
+	<beans:bean id="jsfAccessDeniedHandler" class="ferro.auxi.JsfAccessDeniedHandler">
+		<beans:property name="loginPath" value="/login.xhtml?logout=ok" />
+		<beans:property name="contextRelative" value="true" />
+	</beans:bean>
+
+	<beans:bean id="authenticationEntryPoint"
+		class="ferro.auxi.JsfLoginUrlAuthenticationEntryPoint">
+		<beans:property name="loginFormUrl" value="/login.xhtml" />
+		<beans:property name="redirectStrategy" ref="jsfRedirectStrategy" />
+	</beans:bean>
+
+	<beans:bean id="jsfRedirectStrategy" class="ferro.auxi.JsfRedirectStrategy" />
+
+	<sec:http pattern="/login.xhtml" security="none" />
+	<sec:http pattern="/WebAPSC/resources/css/**" security="none" />
+	<sec:http pattern="/WebAPSC/resources/js/**" security="none" />
+	<sec:http pattern="/WebAPSC/resources/img/**" security="none" />
+	<sec:http pattern="/WebAPSC/resources/fonts/**" security="none" />
+	<sec:global-method-security
+		pre-post-annotations="enabled" />
+
+	<sec:http auto-config="false" use-expressions="true">
+
+		<sec:custom-filter ref="exceptionTranslationFilter"
+			before="FILTER_SECURITY_INTERCEPTOR" />
+
+		<sec:intercept-url pattern="/WebAPSC/resources/**" />
+		<sec:intercept-url pattern="login.xhtml" access="permitAll" />
+		<sec:intercept-url pattern="/javax.faces.resource/**" access="permitAll" />	
+		<sec:intercept-url pattern="/views/admin/**" access="hasRole('ROLE_SISTEMAS')" />		
+		<sec:intercept-url pattern="/views/ventas/**" access="hasRole('ROLE_VENTAS')" />	
+		<sec:intercept-url pattern="/views/**" access="isAuthenticated()" />
+		<sec:form-login login-page="/login.xhtml"
+			default-target-url="/index.xhtml" authentication-failure-url="/login.xhtml?auth=fail"
+			always-use-default-target="true" username-parameter="j_username"
+			password-parameter="j_password" />
+		<sec:logout logout-url="/j_spring_security_logout"
+			invalidate-session="true" 
+			delete-cookies="JSESSIONID" 
+			success-handler-ref="logoutSuccessHandler" />
+
+
+		<sec:session-management invalid-session-url="/login.xhtml">
+			<sec:concurrency-control max-sessions="1"
+				error-if-maximum-exceeded="true" />
+		</sec:session-management>
+
+	</sec:http>
+
+	<beans:bean id="logoutSuccessHandler" class="ferro.auxi.LogoutSuccessHandler">
+		<beans:constructor-arg value="/index.xhtml?logout=ok" />
+	</beans:bean>
+
+
+	<beans:bean id="daoAuthenticationProvider"
+		class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+		<beans:property name="userDetailsService" value="#{userDetailsServicesImpl}" />
+	</beans:bean>
+
+	<!-- Set customUserDetailsService class as the authentication Manager for 
+		Spring Security -->
+	<sec:authentication-manager alias="authenticationManager">
+		<sec:authentication-provider
+			user-service-ref="userDetailsServicesImpl">
+			<sec:password-encoder hash="plaintext"></sec:password-encoder>
+		</sec:authentication-provider>
+	</sec:authentication-manager>
+
+	<!-- Inject authentication Manager to our LoginBean <beans:bean id="loginMB" 
+		name="loginMB" class="ferro.store.LoginMB" scope="session"> <beans:property 
+		name="authenticationManager" ref="authenticationManager"></beans:property> 
+		</beans:bean> -->
+
+</beans:beans>

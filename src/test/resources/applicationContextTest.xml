@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:c="http://www.springframework.org/schema/c" xmlns:cache="http://www.springframework.org/schema/cache"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:lang="http://www.springframework.org/schema/lang" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
+		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-4.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.1.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.1.xsd
+		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-4.1.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.1.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.1.xsd">
+
+
+	<context:annotation-config />
+	<context:component-scan base-package="ferro" />
+	<context:property-placeholder location="classpath:hibernate.properties" />
+	
+	<import resource="securityTest.xml" />
+	<!-- <import resource="datasource.xml"/> -->
+
+	<!-- dataSource bonecp -->
+	<bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource"
+		destroy-method="close">
+		<!-- <property name="driverClass" value="com.microsoft.sqlserver.jdbc.SQLServerDriver" 
+			/> -->
+		<property name="driverClass" value="${jdbc.driverClassName}" />
+		<property name="jdbcUrl" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.user}" />
+		<property name="password" value="${jdbc.pass}" />
+		<property name="idleConnectionTestPeriodInMinutes" value="60" />
+		<property name="idleMaxAgeInMinutes" value="240" />
+		<property name="maxConnectionsPerPartition" value="30" />
+		<property name="minConnectionsPerPartition" value="10" />
+		<!-- property name="connectionTestStatement" value="SELECT count(*) FROM dbo.sysobjects" /-->
+		<property name="partitionCount" value="3" />
+		<property name="acquireIncrement" value="5" />
+		<property name="statementsCacheSize" value="100" />
+		<!-- property name="releaseHelperThreads" value="3" / -->
+	</bean>
+	<!-- fin dataSource -->
+
+	<!--SessionFactory -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" value="#{dataSource}" />
+		<property name="packagesToScan" value="ferro.model" />
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<prop key="hibernate.connection.pool_size">1</prop>
+				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+				<prop key="transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory
+				</prop>
+				<!--<prop key="hibernate.hbm2ddl.auto">create-drop</prop> -->
+				<prop key="hibernate.format_sql">true</prop>
+				<prop key="hibernate.generate_statistics">true</prop>
+				<prop key="hibernate.use_sql_comments">true</prop>
+				<prop key="hibernate.current_session_context_class">thread</prop>
+				<prop key="hibernate.cglib.use_reflection_optimizer">true</prop>
+				<prop key="hibernate.hibernate.cache.use_query_cache">true</prop>
+				<prop key="hibernate.enable_lazy_load_no_trans">true</prop>
+				<prop key="hibernate.transaction.flush_before_completion">true</prop>
+			</props>
+		</property>
+	</bean>
+	<!--Fin SessionFactory -->
+
+
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" value="#{sessionFactory}" />
+	</bean>
+<!-- 	<bean id="userDetailsService" class="ferro.services.UserDetailsServicesImpl"/>-->
+	<!-- <bean id="apscDBUtil" class="ferro.dao.ApscDBUtil"> </bean> -->
+
+	<!--APSC DAOS <bean id="apscParamGeneralesBeanDAO" class="ferro.dao.ApscParamGeneralesDAO" 
+		/> -->
+
+	<!-- DAOS -->
+
+	<!-- servicios <bean id="apscParamGeneralesSer" class="ferro.services.ApscParamGeneralesSer" 
+		/> -->
+
+	<!-- fin de servicios <bean id="paramMB" class="ferro.store.ParamMB"> <property 
+		name="apscParamGeneralesSer" value="#{apscParamGeneralesSer}"></property> 
+		</bean> -->
+
+	
+
+</beans>

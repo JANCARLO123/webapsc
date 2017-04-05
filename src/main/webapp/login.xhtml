@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!-- xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core" -->
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	>
+<h:head>
+</h:head>
+<h:body>
+	<ui:composition template="/WEB-INF/tags/layout.xhtml">
+		<ui:define name="content">
+			<p:panel header="Ingrese sus credenciales">
+					<div align="right" style="">
+						<h:form id="loginFormId" prependId="false">
+							<div id="loginFieldsPnlId">
+								<div id="loginFieldUsrContId">
+									<h:outputText value="Usuario" for="j_username"
+										style="padding-left: 30px; padding-right: 30px;" />
+									<h:inputText id="j_username" required="true"
+										value="#{loginMB.j_username}"
+										requiredMessage="Please enter username"></h:inputText>
+		
+								</div>
+								<div id="loginFieldPassContId">
+									<h:outputText value="Password" for="j_password"
+										style="padding-left: 30px; padding-right: 30px;" />
+									<h:inputSecret id="j_password" required="true"
+										value="#{loginMB.j_password}"
+										requiredMessage="Please enter password" name="j_password"></h:inputSecret>
+		
+								</div>
+							</div>
+							<div id="loginBtnPanelId">
+								<h:commandButton id="btnLoginId" value="Login"
+									action="#{loginMB.login}" styleClass="loginPanelBtn"></h:commandButton>
+								<h:commandButton id="btnCancelId" value="Cancel"
+									action="#{loginMB.cancel}" styleClass="loginPanelBtn"
+									immediate="true" update="loginFormId"></h:commandButton>
+							</div>
+						</h:form>
+					</div>
+					<div>
+						<h:messages></h:messages>
+					</div>
+				</p:panel>		
+		</ui:define>
+
+	</ui:composition>
+</h:body>
+</html>
